@@ -10,30 +10,30 @@ import { useTasks } from './hooks/useTasks';
 import { sortTasks } from './utils/helpers';
 import './App.css';
 
-// Компонент для основной логики приложения
+//компонент для основной логики приложения
 function TaskManager() {
   const { tasks } = useTasks();
   const [selectedCategory, setSelectedCategory] = useState('Все');
   const [searchTerm, setSearchTerm] = useState('');
   const [sortBy, setSortBy] = useState('newest');
 
-  // Фильтрация и поиск задач
+  //фильтрация и поиск задач
   const filteredAndSortedTasks = useMemo(() => {
     let filtered = tasks;
 
-    // Фильтрация по категории
+    //фильтрация по категории
     if (selectedCategory !== 'Все') {
       filtered = filtered.filter(task => task.category === selectedCategory);
     }
 
-    // Поиск по тексту
+    //поиск по тексту
     if (searchTerm) {
       filtered = filtered.filter(task =>
         task.text.toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
 
-    // Сортировка
+    //сортировка
     return sortTasks(filtered, sortBy);
   }, [tasks, selectedCategory, searchTerm, sortBy]);
 
@@ -69,7 +69,7 @@ function TaskManager() {
   );
 }
 
-// Главный компонент
+//главный компонент
 function App() {
   return (
     <TaskProvider>
