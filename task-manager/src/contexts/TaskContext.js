@@ -13,7 +13,7 @@ export const useTasks = () => {
 export const TaskProvider = ({ children }) => {
   const [tasks, setTasks] = useState([]);
 
-  // Загрузка из localStorage при монтировании
+  //загрузка из localStorage при монтировании
   useEffect(() => {
     try {
       const savedTasks = localStorage.getItem('tasks');
@@ -25,7 +25,7 @@ export const TaskProvider = ({ children }) => {
     }
   }, []);
 
-  // Сохранение в localStorage при изменении задач
+  //сохранение в localStorage при изменении задач
   useEffect(() => {
     try {
       localStorage.setItem('tasks', JSON.stringify(tasks));
