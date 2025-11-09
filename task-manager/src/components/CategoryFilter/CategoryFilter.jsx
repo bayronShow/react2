@@ -1,16 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useTasks } from '../../hooks/useTasks';
 import './CategoryFilter.css';
 
-export const CategoryFilter = () => {
+export const CategoryFilter = ({ selectedCategory, onCategoryChange }) => {
   const { tasks } = useTasks();
-  const [selectedCategory, setSelectedCategory] = useState('Все');
 
   const categories = ['Все', ...new Set(tasks.map(task => task.category))];
-
-  const filteredTasks = selectedCategory === 'Все' 
-    ? tasks 
-    : tasks.filter(task => task.category === selectedCategory);
 
   return (
     <div className="category-filter">
@@ -20,14 +15,11 @@ export const CategoryFilter = () => {
           <button
             key={category}
             className={`filter-button ${selectedCategory === category ? 'active' : ''}`}
-            onClick={() => setSelectedCategory(category)}
+            onClick={() => onCategoryChange(category)}
           >
             {category}
           </button>
         ))}
-      </div>
-      <div className="task-count">
-        Показано задач: {filteredTasks.length} из {tasks.length}
       </div>
     </div>
   );

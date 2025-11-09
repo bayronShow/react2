@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 
 const TaskContext = createContext();
 
@@ -13,6 +13,27 @@ export const useTasks = () => {
 export const TaskProvider = ({ children }) => {
   const [tasks, setTasks] = useState([]);
 
+  // Загрузка из localStorage при монтировании
+  useEffect(() => {
+    try {
+      const savedTasks = localStorage.getItem('tasks');
+      if (savedTasks) {
+        setTasks(JSON.parse(savedTasks));
+      }
+    } catch (error) {
+      console.log('Error loading tasks from localStorage:', error);
+    }
+  }, []);
+
+  // Сохранение в localStorage при изменении задач
+  useEffect(() => {
+    try {
+      localStorage.setItem('tasks', JSON.stringify(tasks));
+    } catch (error) {
+      console.log('Error saving tasks to localStorage:', error);
+    }
+  }, [tasks]);
+
   const addTask = (task) => {
     const newTask = {
       id: Date.now(),
@@ -23,12 +44,18 @@ export const TaskProvider = ({ children }) => {
     setTasks(prev => [...prev, newTask]);
   };
 
+  const editTask = (id, updatedTask) => {
+    setTasks(prev => prev.map(task =>
+      task.id === id ? { ...task, ...updatedTask } : task
+    ));
+  };
+
   const deleteTask = (id) => {
     setTasks(prev => prev.filter(task => task.id !== id));
   };
 
   const toggleTask = (id) => {
-    setTasks(prev => prev.map(task => 
+    setTasks(prev => prev.map(task =>
       task.id === id ? { ...task, completed: !task.completed } : task
     ));
   };
@@ -36,6 +63,7 @@ export const TaskProvider = ({ children }) => {
   const value = {
     tasks,
     addTask,
+    editTask,
     deleteTask,
     toggleTask,
   };
