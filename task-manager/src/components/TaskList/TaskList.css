@@ -1,0 +1,10 @@
+.task-list {
+  margin-bottom: 30px;
+}
+
+.empty-message {
+  text-align: center;
+  color: #6c757d;
+  font-style: italic;
+  padding: 40px;
+}
